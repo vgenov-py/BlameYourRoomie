@@ -1,0 +1,20 @@
+{
+    "name": "BlameYourRoomie",
+    "version": "1.0.0",
+    "description": "",
+    "main": "piso.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/vgenov-py/BlameYourRoomie.git"
+    },
+    "keywords": [],
+    "author": "Kuga",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/vgenov-py/BlameYourRoomie/issues"
+    },
+    "homepage": "https://github.com/vgenov-py/BlameYourRoomie#readme"
+}

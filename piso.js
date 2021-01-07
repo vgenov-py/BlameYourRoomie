@@ -58,48 +58,20 @@ class Apartment {
         return dictionary;
     }
     invoiceReport(invoiceGiven) {
-            const dictionary = { Factura: invoiceGiven.type };
-            this.roomiesList.forEach((roomie) => {
-                dictionary[roomie.name] = 0;
-                roomie.debts.forEach((debt) => {
-                    if (debt.invoice === invoiceGiven) {
-                        dictionary[roomie.name] += debt.total;
-                    }
-                });
+        const dictionary = { Factura: invoiceGiven.type };
+        this.roomiesList.forEach((roomie) => {
+            dictionary[roomie.name] = 0;
+            roomie.debts.forEach((debt) => {
+                if (debt.invoice === invoiceGiven) {
+                    dictionary[roomie.name] += debt.total;
+                }
             });
-            return dictionary;
-        }
-        // payInvoice(invoiceGiven) {
-        //     const dictionary = {};
-        //     let count = 0;
-        //     let countTrue = 0;
-        //     this.roomiesList.forEach((roomie) => {
-        //         roomie.debts.forEach((debt) => {
-        //             count += 1;
-        //             if (debt.invoice === invoiceGiven) {
-        //                 if (debt.isPayed === true) {
-        //                     dictionary[roomie.name] = true;
-        //                 } else {
-        //                     dictionary[roomie.name] = false;
-        //                 }
-        //             }
-        //         });
-        //     });
-        //     for (let value of Object.values(dictionary)) {
-        //         if (value === true) {
-        //             countTrue += 1;
-        //         }
-        //     }
-        //     if (Object.values(dictionary).length === countTrue) {
-        //         console.log(countTrue, Object.values(dictionary).length);
-        //         return invoiceGiven.isPayed === true;
-        //     } else {
-        //         return "Someone doesn't payed";
-        //     }
-        // }
+        });
+        return dictionary;
+    }
     payInvoice(invoiceGiven) {
         const dicta = {};
-        const kuga = { "Left to pay": [] };
+        const debtors = { "Left to pay": [] };
         this.roomiesList.forEach((roomie) => {
             roomie.debts
                 .filter((debt) => debt.invoice === invoiceGiven)
@@ -116,11 +88,13 @@ class Apartment {
         } else {
             for (const [key, value] of Object.entries(dicta)) {
                 if (value === false) {
-                    kuga["Left to pay"].push(key);
+                    debtors["Left to pay"].push(key);
                 }
             }
         }
-        console.log(dicta, kuga);
+        if (debtors["Left to pay"].length >= 1) {
+            console.log(debtors);
+        }
     }
 }
 
@@ -256,9 +230,18 @@ guzmanElBueno83.roomiesList[4].payInvoiceDebt(guzmanElBueno83.invoices[2]);
 guzmanElBueno83.roomiesList[4].payInvoiceDebt(guzmanElBueno83.invoices[3]);
 guzmanElBueno83.roomiesList[5].payInvoiceDebt(guzmanElBueno83.invoices[3]);
 
+guzmanElBueno83.roomiesList[0].payInvoiceDebt(guzmanElBueno83.invoices[2]);
+guzmanElBueno83.roomiesList[2].payInvoiceDebt(guzmanElBueno83.invoices[2]);
+guzmanElBueno83.roomiesList[3].payInvoiceDebt(guzmanElBueno83.invoices[2]);
+guzmanElBueno83.roomiesList[0].payInvoiceDebt(guzmanElBueno83.invoices[3]);
+guzmanElBueno83.roomiesList[2].payInvoiceDebt(guzmanElBueno83.invoices[3]);
+guzmanElBueno83.roomiesList[3].payInvoiceDebt(guzmanElBueno83.invoices[3]);
+
 guzmanElBueno83.payInvoice(guzmanElBueno83.invoices[0]);
 guzmanElBueno83.payInvoice(guzmanElBueno83.invoices[1]);
-console.log(guzmanElBueno83.invoices[1]);
+guzmanElBueno83.payInvoice(guzmanElBueno83.invoices[2]);
+guzmanElBueno83.payInvoice(guzmanElBueno83.invoices[3]);
+console.log(guzmanElBueno83.invoices[3]);
 // console.log(guzmanElBueno83.payInvoice(guzmanElBueno83.invoices[0]));
 // console.log(guzmanElBueno83);
 // console.log(guzmanElBueno83.payInvoice(guzmanElBueno83.invoices[0]));
