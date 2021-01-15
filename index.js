@@ -5,6 +5,8 @@ const path = require("path");
 const mongoose = require("mongoose");
 const InvoiceDB = require("./models/invoices");
 
+app.use(express.urlencoded({ extended: true }));
+
 mongoose
     .connect("mongodb://localhost:27017/blameyourroomie", {
         useNewUrlParser: true,
@@ -17,14 +19,22 @@ app.set("view engine", "ejs");
 
 app.get("/invoices", async(req, res) => {
     const invoices = await InvoiceDB.find({});
-    console.log(invoices);
-    res.render("invoices/index.ejs", { invoices });
+    res.render("invoices/index", { invoices });
+});
+
+app.get("/invoices/new", (req, res) => {
+    res.render("invoices/new");
+});
+
+app.post("/invoices", async(req, res) => {
+    const newInvoice = new InvoiceDB(req.body);
+    await newInvoice.save();
+    res.redirect(`invoices/${newInvoice._id}`);
 });
 
 app.get("/invoices/:id", async(req, res) => {
     const { id } = req.params;
     const invoiceSelected = await InvoiceDB.findById(id);
-    console.log(invoiceSelected);
     res.render("invoices/details", { invoiceSelected });
 });
 
