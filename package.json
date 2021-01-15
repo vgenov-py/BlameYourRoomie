@@ -16,5 +16,10 @@
     "bugs": {
         "url": "https://github.com/vgenov-py/BlameYourRoomie/issues"
     },
-    "homepage": "https://github.com/vgenov-py/BlameYourRoomie#readme"
+    "homepage": "https://github.com/vgenov-py/BlameYourRoomie#readme",
+    "dependencies": {
+        "ejs": "^3.1.5",
+        "express": "^4.17.1",
+        "mongoose": "^5.11.12"
+    }
 }

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Details of the invoice selected</title>
+</head>
+
+<body>
+    <h3>
+        <ul>
+            <li>Servicio:
+                <%= invoiceSelected.service %>
+            </li>
+            <li>Total:
+                <%=invoiceSelected.total %>
+            </li>
+            <li>Desde el:
+                <%=invoiceSelected.begin %>
+            </li>
+            <li>Hasta el:
+                <%=invoiceSelected.end %>
+            </li>
+            <li>Estado:
+                <%=invoiceSelected.isPayed %>
+            </li>
+            <a href="/invoices">Volver atras</a>
+        </ul>
+    </h3>
+</body>
+
+</html>
