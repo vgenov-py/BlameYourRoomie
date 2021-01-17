@@ -4,9 +4,9 @@ const path = require("path");
 
 const mongoose = require("mongoose");
 const InvoiceDB = require("./models/invoices");
-
+const RoomieDB = require("./models/roomies");
 app.use(express.urlencoded({ extended: true }));
-
+app.locals.kuga = "Kuga";
 mongoose
     .connect("mongodb://localhost:27017/blameyourroomie", {
         useNewUrlParser: true,
@@ -16,6 +16,23 @@ mongoose
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
+
+//Roomies:
+app.get("/roomies", async(req, res) => {
+    const roomies = await RoomieDB.find({});
+    res.render("roomies/index", { roomies });
+});
+
+app.get("/roomies/new", (req, res) => {
+    res.render("roomies/new");
+});
+
+app.post("/roomies", async(req, res) => {
+    const newRoomie = new RoomieDB(req.body);
+    await newRoomie.save();
+    res.send("Roomie added");
+});
+//Invoices:
 
 app.get("/invoices", async(req, res) => {
     const invoices = await InvoiceDB.find({});
@@ -32,15 +49,54 @@ app.post("/invoices", async(req, res) => {
     res.redirect(`invoices/${newInvoice._id}`);
 });
 
+app.locals.debtors = {};
+
 app.get("/invoices/:id", async(req, res) => {
     const { id } = req.params;
     const invoiceSelected = await InvoiceDB.findById(id);
-    res.render("invoices/details", { invoiceSelected });
+
+    //TEST:
+    res.locals.debtors = {};
+    const roomies = await RoomieDB.find({});
+    const differenceOnDays =
+        (invoiceSelected.end - invoiceSelected.begin) / (1000 * 60 * 60 * 24);
+    const totalPerDayPerRoom = invoiceSelected.total / differenceOnDays / 5;
+    roomies.forEach((roomie) => {
+        // 1. Extract interval:
+        const interval = [];
+        let debtPerInvoice = 0;
+        if (
+            invoiceSelected.begin >= roomie.end ||
+            invoiceSelected.end < roomie.begin
+        ) {} else {
+            // Extracting the first element of interval:
+            if (invoiceSelected.begin >= roomie.begin) {
+                interval.push(invoiceSelected.begin);
+            } else {
+                interval.push(roomie.begin);
+            }
+            // Extracting the second element of interval:
+            if (invoiceSelected.end <= roomie.end) {
+                interval.push(invoiceSelected.end);
+            } else {
+                interval.push(roomie.end);
+            }
+            const diffOnDays = (interval[1] - interval[0]) / (60 * 60 * 24 * 1000); // Getting differences between dates and after converting ms in days.
+            debtPerInvoice = totalPerDayPerRoom * diffOnDays;
+            res.locals.debtors[roomie.name] = parseFloat(debtPerInvoice.toFixed(2));
+        }
+    });
+    res.render("invoices/details", {
+        invoiceSelected: invoiceSelected,
+    });
+    console.log(app.locals.debtors, invoiceSelected.total);
 });
 
 app.listen(3000, () => {
     console.log("Listening on port 3000!");
 });
+
+//OOP:
 
 class Apartment {
     constructor(id, adress, numberOfRooms) {

@@ -1,0 +1,30 @@
+<%- include("../partials/head") %>
+    <title>Nuevo inquilino</title>
+    </head>
+
+    <body>
+        <div class="container">
+            <%- include("../partials/navbar") %>
+                <main>
+                    <h3>Nuevo inquilino</h3>
+                    <form action="/roomies" method="POST">
+                        <div class="row g-3">
+                            <div class="col">
+                                <input name="name" type="text" placeholder="Nombre del inquilino" class="form-control" aria-label="Last name" />
+                            </div>
+                            <div class="col">
+                                <input name="begin" type="date" class="form-control" placeholder="Last name" aria-label="Last name" />
+                            </div>
+                            <div class="col">
+                                <input name="end" type="date" class="form-control" placeholder="Last name" aria-label="Last name" />
+                            </div>
+                        </div>
+                        <button style="margin-top: 5px" class="btn btn-secondary">
+                                Agregar inquilino
+                              </button>
+                    </form>
+                </main>
+        </div>
+    </body>
+
+    </html>

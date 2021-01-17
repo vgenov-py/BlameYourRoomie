@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous" />
+    <title>Inquilinos</title>
+</head>
+
+<body>
+    <div class="container-md">
+        <%- include("../partials/navbar") %>
+            <main>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <%= kuga  %>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Inicio</th>
+                                <th scope="col">Fin</th>
+                                <th scope="col">Deuda</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% roomies.forEach((roomie) =>{ %>
+                            <tr>
+                                <th scope="row">
+                                    <%= roomie.name%>
+                                        </a>
+                                </th>
+                                <td>
+                                    <%=   roomie.begin.toISOString().split("T")[0].split("-").toString().replace(",","-").replace(",","-")%>
+                                </td>
+                                <td>
+                                    <%=   roomie.end%>
+                                </td>
+                                <td>
+                                    <%= roomie.debt %>
+                                </td>
+                            </tr>
+                            <% }) %>
+                    </tbody>
+                </table>
+                <a href="roomies/new"><button type="button" class="btn btn-secondary">
+            Nuevo inquilino
+          </button></a
+        >
+      </main>
+    </div>
+  </body>
+</html>
