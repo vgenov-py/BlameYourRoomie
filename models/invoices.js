@@ -1,4 +1,8 @@
 const mongoose = require("mongoose");
+// mongoose.connect("mongodb://localhost:27017/blameyourroomie", {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+// });
 const invoicesSchema = new mongoose.Schema({
     total: {
         type: Number,
@@ -23,8 +27,22 @@ const invoicesSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    apartmentID: {
+        tpye: String,
+    },
 });
 
 const InvoiceDB = mongoose.model("Invoice", invoicesSchema);
 
 module.exports = InvoiceDB;
+
+// async function kuga() {
+//     await InvoiceDB.deleteMany({ service: "otro" });
+// }
+// kuga();
+
+// async function show() {
+//     const kuga = await InvoiceDB.find({ service: "agua" });
+//     console.log(kuga);
+// }
+// show();

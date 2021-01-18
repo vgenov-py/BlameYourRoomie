@@ -15,25 +15,27 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <%= kuga  %>
-                                <th scope="col">Nombre</th>
-                                <th scope="col">Inicio</th>
-                                <th scope="col">Fin</th>
-                                <th scope="col">Deuda</th>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Inicio</th>
+                            <th scope="col">Fin</th>
+                            <th scope="col">Deuda</th>
                         </tr>
                     </thead>
                     <tbody>
                         <% roomies.forEach((roomie) =>{ %>
                             <tr>
                                 <th scope="row">
-                                    <%= roomie.name%>
-                                        </a>
+                                    <a href="roomies/<%=roomie._id %> " style="text-decoration: none">
+                                        <%= roomie.name%>
+                                    </a>
                                 </th>
                                 <td>
-                                    <%=   roomie.begin.toISOString().split("T")[0].split("-").toString().replace(",","-").replace(",","-")%>
+                                    <%=
+                roomie.begin.toISOString().split("T")[0].split("-").toString().replace(",","-").replace(",","-")%>
                                 </td>
                                 <td>
-                                    <%=   roomie.end%>
+                                    <%=
+                roomie.end.toISOString().split("T")[0].split("-").toString().replace(",","-").replace(",","-")%>
                                 </td>
                                 <td>
                                     <%= roomie.debt %>
@@ -44,6 +46,11 @@
                 </table>
                 <a href="roomies/new"><button type="button" class="btn btn-secondary">
             Nuevo inquilino
+          </button></a
+        >
+        <a href="/apartments/<%=apartmentID%> "
+          ><button style="margin-top: 2px" class="btn btn-success">
+            Volver atrás
           </button></a
         >
       </main>

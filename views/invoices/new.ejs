@@ -12,7 +12,7 @@
     <div class="container">
         <%- include("../partials/navbar") %>
             <h3>Nueva factura</h3>
-            <form action="/invoices" method="POST">
+            <form action="/apartments/<%= apartmentID.id %>/invoices" method="POST">
                 <div class="row g-3">
                     <div class="col">
                         <select class="form-select" aria-label="Default select example" name="service">
@@ -23,16 +23,16 @@
             </select>
                     </div>
                     <div class="col">
-                        <input name="begin" type="date" class="form-control" placeholder="Last name" aria-label="Last name" />
+                        <input name="begin" type="date" class="form-control" aria-label="Last name" />
                     </div>
                     <div class="col">
-                        <input name="end" type="date" class="form-control" placeholder="Last name" aria-label="Last name" />
+                        <input name="end" type="date" class="form-control" aria-label="Last name" />
                     </div>
                     <div class="col">
                         <input name="total" type="number" class="form-control" aria-label="Last name" />
                     </div>
                 </div>
-
+                <input type="text" name="apartmentID" value="<%= apartmentID.id %>" style="display: none" />
                 <button style="margin-top: 5px" class="btn btn-secondary">
           Crear factura
         </button>

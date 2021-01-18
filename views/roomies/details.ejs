@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous" />
+    <title>
+        <%= roomie.name %>
+    </title>
+</head>
+
+<body>
+    <div class="container-md">
+        <%- include("../partials/navbar") %>
+            <main>
+                <ul class="list-group" style="display: inline">
+                    <li class="list-group-item">
+                        <%= roomie.name %>
+                    </li>
+                    <li class="list-group-item">$
+                        <%=roomie.debt %>
+                    </li>
+                    <li class="list-group-item">
+                        <%=roomie.begin.toISOString().split("T")[0].split("-").toString().replace(",","-").replace(",","-")
+            %>
+                    </li>
+                    <li class="list-group-item">
+                        <%=roomie.end.toISOString().split("T")[0].split("-").toString().replace(",","-").replace(",","-")
+            %>
+                    </li>
+                </ul>
+                <a href="/apartments/<%=roomie.apartmentID%>/roomies "><button style="margin-top: 2px" class="btn btn-success">
+                    Volver atrás
+                  </button></a>
+            </main>
+    </div>
+</body>
+
+</html>

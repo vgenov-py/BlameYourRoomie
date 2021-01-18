@@ -1,16 +1,6 @@
 const Roomie = require("../models/roomies");
 const Invoice = require("../models/invoices");
 const mongoose = require("mongoose");
-mongoose
-    .connect("mongodb://localhost:27017/blameyourroomie", {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    })
-    .then(console.log("Mongo is connected!"));
-// Roomie.find({}).then((data) => {
-//     console.log(data);
-// });
-//"Laura", new Date(2021, 0, 1, 2), new Date()
 
 async function makeReport() {
     const debtors = {};
@@ -44,5 +34,3 @@ async function makeReport() {
     });
     console.log(debtors, invoice.total);
 }
-
-makeReport();

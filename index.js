@@ -3,23 +3,40 @@ const app = express();
 const path = require("path");
 
 const mongoose = require("mongoose");
+const ApartmentDB = require("./models/apartments");
 const InvoiceDB = require("./models/invoices");
 const RoomieDB = require("./models/roomies");
 app.use(express.urlencoded({ extended: true }));
-app.locals.kuga = "Kuga";
 mongoose
     .connect("mongodb://localhost:27017/blameyourroomie", {
         useNewUrlParser: true,
         useUnifiedTopology: true,
+        useFindAndModify: false,
     })
     .then(console.log("Mongo is connected!"));
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
+//Apartments:
+app.get("/apartments", async(req, res) => {
+    const apartments = await ApartmentDB.find({});
+    res.render("apartments/index", { apartments });
+});
+
+app.get("/apartments/:id", async(req, res) => {
+    const { id } = req.params;
+    const apartmentSelected = await ApartmentDB.findById(id);
+    res.render("apartments/details", {
+        apartmentSelected,
+    });
+});
+
 //Roomies:
-app.get("/roomies", async(req, res) => {
-    const roomies = await RoomieDB.find({});
+app.get("/apartments/:id/roomies", async(req, res) => {
+    const apartmentID = req.params;
+    const roomies = await RoomieDB.find({ apartmentID: apartmentID.id });
+    res.locals.apartmentID = apartmentID.id;
     res.render("roomies/index", { roomies });
 });
 
@@ -32,31 +49,45 @@ app.post("/roomies", async(req, res) => {
     await newRoomie.save();
     res.send("Roomie added");
 });
+
 //Invoices:
 
-app.get("/invoices", async(req, res) => {
-    const invoices = await InvoiceDB.find({});
+app.get("/apartments/:id/invoices", async(req, res) => {
+    const apartmentID = req.params;
+    const invoices = await InvoiceDB.find({ apartmentID: apartmentID.id });
+    res.locals.apartmentID = apartmentID.id;
     res.render("invoices/index", { invoices });
 });
 
-app.get("/invoices/new", (req, res) => {
-    res.render("invoices/new");
+app.get("/apartments/:id/invoices/new", (req, res) => {
+    const apartmentID = req.params;
+    console.log(req.body, req.params, apartmentID);
+    res.render("invoices/new", { apartmentID });
 });
 
-app.post("/invoices", async(req, res) => {
-    const newInvoice = new InvoiceDB(req.body);
+app.post("/apartments/:id/invoices", async(req, res) => {
+    const newInvoice = new InvoiceDB({
+        service: req.body.service,
+        apartmentID: req.body.apartmentID,
+        begin: req.body.begin,
+        end: req.body.end,
+        total: req.body.total,
+        apartmentID: req.body.apartmentID,
+    });
     await newInvoice.save();
+    console.log(newInvoice._id);
+    const update = { apartmentID: req.body.apartmentID };
+    await InvoiceDB.findOneAndUpdate({ _id: newInvoice._id }, update);
+    console.log(req.body.apartmentID);
+
     res.redirect(`invoices/${newInvoice._id}`);
 });
 
-app.locals.debtors = {};
-
-app.get("/invoices/:id", async(req, res) => {
+app.get("/apartments/:id/invoices/:id", async(req, res) => {
     const { id } = req.params;
     const invoiceSelected = await InvoiceDB.findById(id);
 
-    //TEST:
-    res.locals.debtors = {};
+    TEST: res.locals.debtors = {};
     const roomies = await RoomieDB.find({});
     const differenceOnDays =
         (invoiceSelected.end - invoiceSelected.begin) / (1000 * 60 * 60 * 24);
@@ -89,7 +120,14 @@ app.get("/invoices/:id", async(req, res) => {
     res.render("invoices/details", {
         invoiceSelected: invoiceSelected,
     });
-    console.log(app.locals.debtors, invoiceSelected.total);
+});
+
+app.get("/apartments/:id/roomies/:id", async(req, res) => {
+    const { id } = req.params;
+    const roomie = await RoomieDB.findById(id);
+    res.render("roomies/details", {
+        roomie,
+    });
 });
 
 app.listen(3000, () => {
