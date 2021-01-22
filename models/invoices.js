@@ -28,7 +28,8 @@ const invoicesSchema = new mongoose.Schema({
         default: false,
     },
     apartmentID: {
-        tpye: String,
+        type: String,
+        required: true,
     },
 });
 

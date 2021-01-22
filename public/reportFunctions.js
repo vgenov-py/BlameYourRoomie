@@ -1,9 +1,12 @@
-async function spreadTotal(RoomieDB, invoiceSelected) {
-    debtors = {};
-    const roomies = await RoomieDB.find({});
+const debtDB = require("../models/debts");
+
+const getDebtors = (roomies, invoiceSelected, rooms) => {
+    const dicta = {};
+    const debtors = [];
+    const amounts = [];
     const differenceOnDays =
         (invoiceSelected.end - invoiceSelected.begin) / (1000 * 60 * 60 * 24);
-    const totalPerDayPerRoom = invoiceSelected.total / differenceOnDays / 5;
+    const totalPerDayPerRoom = invoiceSelected.total / differenceOnDays / rooms;
     roomies.forEach((roomie) => {
         // 1. Extract interval:
         const interval = [];
@@ -26,10 +29,31 @@ async function spreadTotal(RoomieDB, invoiceSelected) {
             }
             const diffOnDays = (interval[1] - interval[0]) / (60 * 60 * 24 * 1000); // Getting differences between dates and after converting ms in days.
             debtPerInvoice = totalPerDayPerRoom * diffOnDays;
-            debtors[roomie.name] = parseFloat(debtPerInvoice.toFixed(2));
+            debtors.push(roomie);
+            amounts.push(parseFloat(debtPerInvoice.toFixed(2)));
         }
-        return debtors;
     });
-}
+    dicta["debtors"] = debtors;
+    dicta["amounts"] = amounts;
+    return dicta;
+};
 
-module.exports = spreadTotal;
+const addDebt = (debtors, amounts, invoiceSelected) => {
+    const numbers = amounts;
+    debtors.forEach(async(debtor) => {
+        const debt = new debtDB({
+            service: invoiceSelected.service,
+            amount: numbers.shift(),
+            invoiceID: invoiceSelected._id,
+        });
+        await debt.save();
+        debtor.debts.push(debt);
+        debtor.debt += debt.amount;
+        await debtor.save();
+    });
+};
+
+module.exports = {
+    getDebtors: getDebtors,
+    addDebt: addDebt,
+};

@@ -35,13 +35,22 @@
                             <li class="list-group-item">Aún no pagada</li>
                             <% }%>
                 </ul>
-                <ul class="list-group" style="display: inline">
+                <!-- <ul class="list-group" style="display: inline">
                     <%for (const name in debtors) { %>
                         <li class="list-group-item">
                             <%= name%>: $
                                 <%= debtors[name]%>
                         </li>
                         <% }%>
+                </ul> -->
+                <ul class="list-group" style="display: inline">
+                    <%debtors.forEach((roomie) => { %>
+                        <li class="list-group-item">
+                            <%= roomie.name%>: $
+                                <%= amounts[0]%>
+                                    <% amounts.shift() %>
+                        </li>
+                        <% })%>
                 </ul>
                 <button style="margin-top: 2px" class="btn btn-success">
           Pagar factura

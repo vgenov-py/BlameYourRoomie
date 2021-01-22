@@ -30,11 +30,28 @@
             %>
                     </li>
                 </ul>
+                <table class="table">
+                    <tbody>
+                        <% roomie.debts.forEach((debt) =>{ %>
+                            <tr>
+                                <td scope="row">
+                                    <%= debt.service%>
+                                </td>
+                                <td>$
+                                    <%= debt.amount%>
+                                </td>
+                                <td>
+                                    <button class="btn btn-success">Saldar deuda</button>
+                                </td>
+                                <%} )%>
+                            </tr>
+                    </tbody>
+                </table>
                 <a href="/apartments/<%=roomie.apartmentID%>/roomies "><button style="margin-top: 2px" class="btn btn-success">
-                    Volver atrás
-                  </button></a>
-            </main>
+            Volver atrás
+          </button></a
+        >
+      </main>
     </div>
-</body>
-
+  </body>
 </html>
