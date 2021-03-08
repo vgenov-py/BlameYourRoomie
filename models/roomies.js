@@ -34,13 +34,25 @@ const roomiesSchema = new mongoose.Schema({
 const RoomieDB = mongoose.model("Roomie", roomiesSchema);
 module.exports = RoomieDB;
 
+// const changeStatus = async(name) => {
+//     const roomie = await RoomieDB.findOne({ name: name });
+//     const debtsModified = roomie.debts;
+//     debtsModified.forEach((debt) => {
+//         debt.isPayed = true;
+//     });
+//     await RoomieDB.updateOne({ name: name }, { $set: { debts: debtsModified } });
+//     await RoomieDB.updateOne({ name: name }, { $set: { debt: 0 } });
+// };
+
+// changeStatus("Norma");
+
 // async function kuga() {
-//     await RoomieDB.updateMany({ apartmentID: "6005581db429961913b7d45f" }, { debts: [] });
+//     await RoomieDB.updateOne({ name: "vito" }, { name: "Vito" });
 // }
 // kuga();
 
 // async function show() {
-//     const kuga = await RoomieDB.find({ name: "Macarena" });
-//     console.log(kuga);
+//     const roomie = await RoomieDB.find({ name: "Macarena" });
+//     console.log(roomie.debts);
 // }
 // show();

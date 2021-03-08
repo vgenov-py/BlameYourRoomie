@@ -14,6 +14,10 @@ const apartmentsSchema = new mongoose.Schema({
         type: Number,
         default: 1,
     },
+    userId: {
+        type: String,
+        required: true,
+    },
 });
 
 const ApartmentDB = mongoose.model("Apartment", apartmentsSchema);
